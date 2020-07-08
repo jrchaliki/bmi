@@ -1,0 +1,34 @@
+.card {
+  background: #ffffff 0% 0% no-repeat padding-box;
+  box-shadow: 2px 1px 16px #404fb933;
+  border-radius: 12px;
+  opacity: 1;
+  position: relative;
+  margin: auto;
+  width: 420px;
+  height: 320px;
+  padding: 20px;
+}
+
+.step {
+  font-size: 14px;
+  color: #707070;
+  margin: 0;
+}
+.title {
+  color: #201eaf;
+  margin: 3px 0 0 0;
+}
+.nextButton {
+  position: absolute;
+  bottom: 20px;
+  left: 7.1rem;
+  width: 224px;
+  height: 48px;
+  background: #fd5c82 0% 0% no-repeat padding-box;
+  border-radius: 24px;
+  color: white;
+  border: none;
+  font-size: 15px;
+  font-weight: 600;
+}
