@@ -1,18 +1,11 @@
 import React, { useState } from "react";
 import Card from "./components/Card";
 
-const InputCss = {
-  height: "55px",
-  width: "100%",
-  position: "relative",
-  top: "60px",
-  fontSize: "18px",
-  border: "1px solid #A5A5E3",
-  paddingLeft: "14px",
-};
+import "./App.css";
 
 function App() {
   const [inputState, setInputState] = useState({ weight: "", height: "" });
+  const [ethnicity, setEthnicity] = useState("");
   const [step, setStep] = useState(1);
 
   const handleChange = (e) => {
@@ -22,46 +15,72 @@ function App() {
 
   const handleNext = () => {
     // if (parseInt(inputState.weight) > 0)
+    if (step === 4) return setStep(1);
     setStep((step) => step + 1);
+  };
+
+  const handleEthncity = (type) => () => {
+    setEthnicity(type);
+  };
+
+  const Weight = (
+    <input
+      type="number"
+      name="weight"
+      className="input"
+      value={inputState.weight}
+      onChange={handleChange}
+      placeholder="Enter your weight"
+    />
+  );
+
+  const Height = (
+    <input
+      type="number"
+      name="height"
+      className="input"
+      value={inputState.height}
+      onChange={handleChange}
+      placeholder="Enter your height"
+    />
+  );
+
+  const Ethnicity = (
+    <ul className="ethnicity">
+      {["Caucasian", "Asian", "South Asian", "African", "Other"].map((ele) => (
+        <li
+          key={ele}
+          onClick={handleEthncity(ele)}
+          className={ethnicity === ele ? "activeEthnicity" : ""}
+        >
+          {ele}
+        </li>
+      ))}
+    </ul>
+  );
+
+  const BMI = <div>Game Over !</div>;
+
+  const activeStep = (step) => {
+    switch (step) {
+      case 1:
+        return { title: "Weight", jsx: Weight };
+      case 2:
+        return { title: "Height", jsx: Height };
+      case 3:
+        return { title: "Ethnicity", jsx: Ethnicity };
+      case 4:
+        return { title: "Your BMI", jsx: BMI };
+      default:
+        return { title: "", jsx: "" };
+    }
   };
 
   return (
     <div>
-      {step === 1 && (
-        <Card step={step} title="Weight" handleNext={handleNext}>
-          <input
-            type="number"
-            name="weight"
-            style={InputCss}
-            value={inputState.weight}
-            onChange={handleChange}
-            placeholder="Enter your weight"
-          />
-        </Card>
-      )}
-      {step === 2 && (
-        <Card step={step} title="Height" handleNext={handleNext}>
-          <input
-            type="number"
-            name="height"
-            style={InputCss}
-            value={inputState.height}
-            onChange={handleChange}
-            placeholder="Enter your height"
-          />
-        </Card>
-      )}
-      {step === 3 && (
-        <Card step={step} title="Ethnicity" handleNext={handleNext}>
-          <ul>
-            {["Caucasian", "Asian", "South Asian", "African", "Other"].map(
-              (ele) => (
-                <li key={ele}>{ele}</li>
-              )
-            )}
-          </ul>
-        </Card>
-      )}
+      <Card step={step} title={activeStep(step).title} handleNext={handleNext}>
+        {activeStep(step).jsx}
+      </Card>
     </div>
   );
 }
