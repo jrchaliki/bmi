@@ -8,6 +8,7 @@ const Card = (props) => {
     <div className={styles.card}>
       <h6 className={styles.step}>{step === 4 ? "Result" : `Step ${step}`}</h6>
       <h2 className={styles.title}>{title}</h2>
+
       <div>{children}</div>
       <button type="button" className={styles.nextButton} onClick={handleNext}>
         {step === 4 ? "Start Over" : "Next"}

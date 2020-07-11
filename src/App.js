@@ -5,18 +5,13 @@ import "./App.css";
 
 function App() {
   const [inputState, setInputState] = useState({ weight: "", height: "" });
+  const [bmiResult, setBMIResult] = useState(0);
   const [ethnicity, setEthnicity] = useState("");
   const [step, setStep] = useState(1);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setInputState({ ...inputState, [name]: value });
-  };
-
-  const handleNext = () => {
-    // if (parseInt(inputState.weight) > 0)
-    if (step === 4) return setStep(1);
-    setStep((step) => step + 1);
   };
 
   const handleEthncity = (type) => () => {
@@ -59,21 +54,43 @@ function App() {
     </ul>
   );
 
-  const BMI = <div>Game Over !</div>;
+  const BMI = <div className="bmi">{bmiResult.toFixed(1)}</div>;
 
   const activeStep = (step) => {
     switch (step) {
       case 1:
-        return { title: "Weight", jsx: Weight };
+        return {
+          title: "Weight",
+          jsx: Weight,
+          validation: parseInt(inputState.weight) > 0,
+        };
       case 2:
-        return { title: "Height", jsx: Height };
+        return {
+          title: "Height",
+          jsx: Height,
+          validation: parseInt(inputState.height) > 0,
+        };
       case 3:
-        return { title: "Ethnicity", jsx: Ethnicity };
+        return { title: "Ethnicity", jsx: Ethnicity, validation: !!ethnicity };
       case 4:
         return { title: "Your BMI", jsx: BMI };
       default:
         return { title: "", jsx: "" };
     }
+  };
+
+  const handleNext = () => {
+    if (step === 3) {
+      setBMIResult(
+        parseInt(inputState.weight) / ((parseInt(inputState.height) / 100) * 2)
+      );
+    }
+    if (step === 4) {
+      setInputState({ weight: "", height: "" });
+      setEthnicity("");
+      return setStep(1);
+    }
+    if (activeStep(step).validation) setStep((step) => step + 1);
   };
 
   return (
