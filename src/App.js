@@ -41,20 +41,48 @@ function App() {
   );
 
   const Ethnicity = (
-    <ul className="ethnicity">
-      {["Caucasian", "Asian", "South Asian", "African", "Other"].map((ele) => (
-        <li
-          key={ele}
-          onClick={handleEthncity(ele)}
-          className={ethnicity === ele ? "activeEthnicity" : ""}
-        >
-          {ele}
-        </li>
-      ))}
-    </ul>
+    <div className="ethnicity">
+      <ul>
+        {["Caucasian", "Asian", "South Asian", "African", "Other"].map((ele) => (
+          <li
+            key={ele}
+            onClick={handleEthncity(ele)}
+            className={ethnicity === ele ? "activeEthnicity" : ""}
+          >
+            {ele}
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 
-  const BMI = <div className="bmi">{bmiResult.toFixed(1)}</div>;
+  const bmiRange = (bmi, ethnicity) => {
+    switch(ethnicity) {
+      case "Asian":
+        if(bmi < 18.5) {
+          return "Underweight";
+        } else if(bmi >= 18.5 && bmi < 22) {
+          return "normal";
+        } else if(bmi >= 22 && bmi < 25) {
+          return "Overweight";
+        } else if(bmi >= 25) {
+          return "Obese";
+        }
+        break;
+      default: 
+        if(bmi < 18.5) {
+          return "Underweight";
+        } else if(bmi >= 18.5 && bmi <= 24.9) {
+          return "normal";
+        } else if(bmi >= 25 && bmi <= 29.9) {
+          return "Overweight";
+        } else if(bmi > 30) {
+          return "Obese";
+        }
+    }
+  }
+
+const BMI = <div className="bmi">{bmiResult.toFixed(1)}<h6>{bmiRange(bmiResult, ethnicity)}</h6></div>;
 
   const activeStep = (step) => {
     switch (step) {
@@ -94,11 +122,9 @@ function App() {
   };
 
   return (
-    <div>
-      <Card step={step} title={activeStep(step).title} handleNext={handleNext}>
-        {activeStep(step).jsx}
-      </Card>
-    </div>
+    <Card step={step} title={activeStep(step).title} handleNext={handleNext}>
+      {activeStep(step).jsx}
+    </Card>
   );
 }
 
